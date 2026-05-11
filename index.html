@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>からだチャレンジ！</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFBF0;--dark:#1A1A2E;--r:20px;--rs:12px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Zen Maru Gothic',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+#app{min-height:100vh;}
+
+/* ── NAV ── */
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.nav-back{width:40px;height:40px;border-radius:50%;background:#F5F5F5;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:.2s;}
+.nav-back:hover{background:#E0E0E0;}
+.nav-title{font-size:1rem;font-weight:900;}
+
+/* ── WELCOME ── */
+.welcome-hero{background:linear-gradient(135deg,#667eea,#764ba2);padding:56px 24px 48px;text-align:center;}
+.welcome-hero .big-icon{font-size:4rem;margin-bottom:14px;}
+.welcome-hero h1{font-size:2.2rem;font-weight:900;color:#fff;text-shadow:0 3px 15px rgba(0,0,0,.2);margin-bottom:8px;}
+.welcome-hero p{color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.7;}
+.welcome-body{padding:28px 20px;max-width:480px;margin:0 auto;}
+.sec-title{font-size:.95rem;font-weight:900;margin-bottom:14px;}
+.player-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.player-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--rs);padding:16px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.07);border:2.5px solid transparent;transition:.2s;}
+.player-card:hover{border-color:#667eea;transform:translateY(-2px);}
+.player-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.player-info .nm{font-size:1rem;font-weight:900;}
+.player-info .sub{font-size:.78rem;color:#999;margin-top:2px;}
+.add-btn{width:100%;padding:16px;border:2.5px dashed #DDD;border-radius:var(--rs);background:transparent;font-family:inherit;font-size:.9rem;font-weight:700;color:#999;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.add-btn:hover{border-color:#667eea;color:#667eea;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(4px);}
+.modal{background:#fff;border-radius:24px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:modal-in .25s ease;}
+@keyframes modal-in{from{opacity:0;transform:scale(.9) translateY(16px)}to{opacity:1;transform:none}}
+.modal h3{font-size:1.2rem;font-weight:900;margin-bottom:6px;text-align:center;}
+.modal .sub-label{text-align:center;font-size:.82rem;color:#999;margin-bottom:16px;}
+.avatar-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+.avatar-btn{width:44px;height:44px;border-radius:50%;border:2px solid #E0E0E0;background:#F5F5F5;font-size:1.4rem;cursor:pointer;transition:.15s;}
+.avatar-btn.sel{border-color:#667eea;background:#EEF2FF;transform:scale(1.15);}
+.m-input{width:100%;padding:13px 16px;border:2px solid #E0E0E0;border-radius:var(--rs);font-family:inherit;font-size:1rem;margin-bottom:11px;outline:none;transition:.2s;}
+.m-input:focus{border-color:#667eea;}
+.m-select{width:100%;padding:13px 16px;border:2px solid #E0E0E0;border-radius:var(--rs);font-family:inherit;font-size:1rem;margin-bottom:18px;outline:none;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+.btn-row{display:flex;gap:10px;}
+.btn{flex:1;padding:14px;border-radius:var(--rs);border:none;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-p{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(102,126,234,.4);}
+.btn-s{background:#F5F5F5;color:#666;}
+.btn-s:hover{background:#E8E8E8;}
+
+/* ── HOME ── */
+.home-header{padding:28px 20px 22px;background:linear-gradient(135deg,#667eea,#764ba2);}
+.home-greeting{color:rgba(255,255,255,.8);font-size:.85rem;}
+.home-user{color:#fff;font-size:1.6rem;font-weight:900;margin-top:2px;}
+.home-grade{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:4px;}
+.switch-btn{margin-top:14px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:6px 14px;font-size:.78rem;font-family:inherit;font-weight:700;cursor:pointer;}
+.home-body{padding:20px 16px 40px;max-width:600px;margin:0 auto;}
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+.cat-card{border-radius:20px;padding:18px 16px;cursor:pointer;border:none;text-align:left;font-family:inherit;display:flex;flex-direction:column;gap:7px;box-shadow:0 4px 16px rgba(0,0,0,.1);transition:.2s;position:relative;overflow:hidden;color:#fff;}
+.cat-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.15);}
+.cat-card::after{content:'';position:absolute;top:-15px;right:-15px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.12);}
+.cat-icon{font-size:1.9rem;}
+.cat-name{font-size:.98rem;font-weight:900;line-height:1.25;}
+.cat-unit-l{font-size:.74rem;opacity:.8;}
+.cat-best{margin-top:3px;font-size:.78rem;background:rgba(255,255,255,.2);border-radius:8px;padding:3px 9px;display:inline-block;}
+.rec-btn{width:100%;padding:17px;background:#fff;border:2.5px solid #E8E8E8;border-radius:20px;font-family:inherit;font-size:.95rem;font-weight:700;color:var(--dark);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s;}
+.rec-btn:hover{border-color:#667eea;color:#667eea;transform:translateY(-2px);}
+
+/* ── CATEGORY ── */
+.cat-hero{padding:28px 20px 22px;color:#fff;text-align:center;}
+.cat-hero .hero-icon{font-size:3rem;margin-bottom:10px;}
+.cat-hero h2{font-size:1.7rem;font-weight:900;}
+.cat-hero .hero-sub{opacity:.85;font-size:.88rem;margin-top:6px;}
+.tab-bar{display:flex;background:#fff;border-bottom:2px solid #F0F0F0;position:sticky;top:57px;z-index:50;}
+.tab-item{flex:1;padding:13px 8px;border:none;background:transparent;font-family:inherit;font-size:.88rem;font-weight:700;color:#999;cursor:pointer;transition:.2s;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab-item.active{color:var(--ac,#667eea);border-bottom-color:var(--ac,#667eea);}
+.tab-pane{padding:20px 18px;max-width:640px;margin:0 auto;}
+.tab-pane.hidden{display:none;}
+.info-card{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.info-card .ic-title{font-size:.8rem;font-weight:900;color:#999;margin-bottom:8px;}
+.info-card p{font-size:.9rem;line-height:1.85;color:#444;}
+.pts-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.pts-list li{display:flex;gap:9px;align-items:flex-start;font-size:.88rem;line-height:1.65;color:#444;}
+.pts-list li::before{content:'✓';font-weight:900;color:#4CAF50;flex-shrink:0;margin-top:2px;}
+.vid-section{margin-bottom:16px;}
+.vid-section .vs-title{font-size:.8rem;font-weight:900;color:#999;margin-bottom:8px;}
+.vid-wrap{border-radius:16px;overflow:hidden;position:relative;padding-top:56.25%;background:#111;cursor:pointer;}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.vid-thumb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#1a1a2e,#16213e);z-index:2;transition:opacity .3s;cursor:pointer;}
+.play-circle{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font-size:1.4rem;transition:.2s;}
+.vid-thumb:hover .play-circle{transform:scale(1.1);background:rgba(255,255,255,.32);}
+.vid-label{color:rgba(255,255,255,.75);font-size:.78rem;font-weight:700;}
+.vid-thumb.gone{opacity:0;pointer-events:none;}
+.vid-note{margin-top:7px;font-size:.76rem;color:#AAA;line-height:1.6;text-align:center;}
+.vid-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#2d2d44,#1a1a2e);padding:20px;text-align:center;}
+.vid-placeholder .ph-icon{font-size:2rem;}
+.vid-placeholder .ph-text{color:rgba(255,255,255,.6);font-size:.75rem;line-height:1.6;}
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:16px 34px;border-radius:999px;border:none;font-family:inherit;font-size:1rem;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.2);transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:8px;z-index:80;}
+.fab:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.25);}
+.fab-spacer{height:80px;}
+
+/* ── ①②⑤⑥⑦ 練習メニューカード ── */
+.training-intro{border-radius:16px;padding:14px 16px;margin-bottom:14px;border-left:4px solid;}
+.training-intro .ti-label{font-size:.77rem;font-weight:900;margin-bottom:3px;}
+.training-intro .ti-sub{font-size:.84rem;color:#555;line-height:1.6;}
+.training-cards{display:flex;flex-direction:column;gap:14px;margin-bottom:24px;}
+.tc{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.08);}
+.tc:active{transform:scale(.99);}
+.tc-header{display:flex;align-items:center;gap:8px;padding:14px 16px 10px;}
+.tc-level{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;font-size:.75rem;font-weight:900;letter-spacing:.02em;flex-shrink:0;}
+.tc-level.lv1{background:#E0F2F1;color:#00796B;}
+.tc-level.lv2{background:#FFF3E0;color:#E65100;}
+.tc-level.lv3{background:#FCE4EC;color:#C2185B;}
+.tc-time{margin-left:auto;font-size:.78rem;font-weight:700;color:#888;background:#F5F5F5;padding:4px 10px;border-radius:999px;flex-shrink:0;}
+.tc-body{padding:2px 16px 14px;}
+.tc-title{font-size:1.02rem;font-weight:900;margin-bottom:6px;color:var(--dark);}
+.tc-desc{font-size:.88rem;line-height:1.8;color:#555;margin-bottom:8px;}
+.tc-tips{background:#FFFDE7;border-radius:12px;padding:9px 12px;font-size:.8rem;color:#6D4C41;margin-bottom:10px;display:flex;gap:6px;align-items:flex-start;line-height:1.65;}
+.tc-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.tc-skill{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:999px;font-size:.78rem;font-weight:700;}
+.tc-vid{overflow:hidden;border-radius:0 0 18px 18px;}
+.tc-vid .vid-wrap{border-radius:0;padding-top:48%;}
+.tc-vid .play-circle{width:44px;height:44px;font-size:1.1rem;}
+
+/* ── CHALLENGE ── */
+.ch-hero{padding:28px 20px 22px;color:#fff;text-align:center;}
+.ch-hero h2{font-size:1.55rem;font-weight:900;}
+.ch-hero p{opacity:.85;margin-top:6px;font-size:.88rem;}
+.ch-body{padding:20px 18px 40px;max-width:480px;margin:0 auto;}
+.timer-display{text-align:center;margin:28px 0 16px;}
+.timer-num{font-size:5.5rem;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;}
+.timer-unit-l{font-size:.95rem;color:#999;font-weight:700;margin-top:4px;}
+.prog-bar-wrap{height:8px;border-radius:999px;background:#EEE;margin:14px 0;overflow:hidden;}
+.prog-bar{height:100%;border-radius:999px;transition:width .1s linear;}
+.cnt-display{text-align:center;margin:20px 0;}
+.cnt-num{font-size:6rem;font-weight:900;line-height:1;transition:transform .1s ease;}
+.cnt-label{font-size:.95rem;color:#999;font-weight:700;margin-top:4px;}
+.big-btn{width:100%;padding:19px;border-radius:20px;border:none;font-family:inherit;font-size:1.1rem;font-weight:900;cursor:pointer;transition:.2s;margin-bottom:11px;}
+.big-btn:active{transform:scale(.97);}
+.tap-btn{font-size:1.4rem;padding:32px 20px;box-shadow:0 6px 0 rgba(0,0,0,.18);}
+.tap-btn:active{box-shadow:0 2px 0 rgba(0,0,0,.18);transform:translateY(4px)!important;}
+.btn-neutral{background:#F5F5F5;color:#555;}
+.inp-wrap{position:relative;margin-bottom:12px;}
+.big-inp{width:100%;padding:22px 20px;border:3px solid #E0E0E0;border-radius:20px;font-family:inherit;font-size:2.4rem;font-weight:900;text-align:center;outline:none;transition:.2s;background:#fff;-moz-appearance:textfield;}
+.big-inp::-webkit-outer-spin-button,.big-inp::-webkit-inner-spin-button{-webkit-appearance:none;}
+.big-inp:focus{border-color:#667eea;}
+.inp-unit{position:absolute;right:20px;bottom:22px;font-size:1.1rem;font-weight:700;color:#999;}
+.two-col{display:flex;gap:10px;margin-bottom:11px;}
+.two-col .big-btn{margin-bottom:0;}
+
+/* ── RECORDS ── */
+.rec-page{padding:18px 18px 48px;max-width:640px;margin:0 auto;}
+.rec-player-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.rec-player-bar .av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.best-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px;}
+.best-card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:4px solid transparent;}
+.best-card .bc-icon{font-size:1.4rem;margin-bottom:5px;}
+.best-card .bc-name{font-size:.75rem;color:#999;font-weight:700;}
+.best-card .bc-val{font-size:1.35rem;font-weight:900;margin-top:3px;}
+.best-card .bc-unit{font-size:.8rem;color:#999;}
+.best-card .bc-none{font-size:.82rem;color:#CCC;margin-top:5px;}
+.best-card .bc-date{font-size:.72rem;color:#CCC;}
+.hist-list{display:flex;flex-direction:column;gap:10px;}
+.hist-item{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:13px 15px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.hist-emoji{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.hist-info .hi-cat{font-size:.77rem;font-weight:700;}
+.hist-info .hi-val{font-size:1.05rem;font-weight:900;}
+.hist-date{margin-left:auto;font-size:.75rem;color:#BBB;flex-shrink:0;}
+.no-rec{text-align:center;padding:48px 0;color:#CCC;font-weight:700;}
+
+/* ── SUCCESS ── */
+.success-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;text-align:center;}
+.success-icon{font-size:5rem;animation:pop-in .5s cubic-bezier(.36,.07,.19,.97);}
+@keyframes pop-in{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.success-val{padding:24px 40px;border-radius:24px;color:#fff;margin:24px 0;box-shadow:0 8px 24px rgba(0,0,0,.15);}
+.success-val .sv-num{font-size:3.5rem;font-weight:900;}
+.success-val .sv-unit{font-size:1.4rem;}
+.success-val .sv-cat{opacity:.85;margin-top:4px;}
+.stack-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;}
+
+/* ── ⑦ バッジ ── */
+.badge-section{margin-bottom:24px;}
+.next-badge-bar{background:linear-gradient(135deg,#FFF8E1,#FFFDE7);border-radius:16px;padding:14px 16px;margin-bottom:16px;border:2px solid #FFD54F;}
+.nb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.nb-emoji-big{font-size:1.5rem;}
+.nb-main{font-size:.9rem;font-weight:900;color:#E65100;}
+.nb-sub{font-size:.77rem;color:#999;margin-top:1px;}
+.nb-prog-wrap{height:8px;border-radius:999px;background:#FFE0B2;overflow:hidden;}
+.nb-prog{height:100%;border-radius:999px;background:linear-gradient(90deg,#FF9800,#FFD54F);transition:width .5s ease;}
+.badge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.badge-card{background:#fff;border-radius:16px;padding:14px 12px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-align:center;transition:.2s;}
+.badge-card.earned{box-shadow:0 4px 16px rgba(0,0,0,.1);border:2px solid #FFD54F;}
+.badge-card.locked{opacity:.4;filter:grayscale(.7);}
+.badge-card .bd-emoji{font-size:2rem;margin-bottom:6px;}
+.badge-card .bd-name{font-size:.82rem;font-weight:900;line-height:1.3;color:var(--dark);}
+.badge-card.earned .bd-name{color:#FF9800;}
+.badge-card .bd-desc{font-size:.72rem;color:#999;margin-top:4px;line-height:1.5;}
+.badge-card .bd-ok{font-size:.7rem;color:#FF9800;font-weight:700;margin-top:4px;}
+.new-badge-area{width:100%;max-width:320px;margin-bottom:8px;}
+.new-badge-card{background:linear-gradient(135deg,#FFD54F,#FF9800);border-radius:20px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:12px;animation:badge-pop .5s cubic-bezier(.36,.07,.19,.97);}
+@keyframes badge-pop{0%{transform:scale(0) rotate(-10deg)}70%{transform:scale(1.08) rotate(3deg)}100%{transform:scale(1) rotate(0deg)}}
+.new-badge-card .nb-ic{font-size:2.2rem;flex-shrink:0;}
+.new-badge-card .nb-lbl{font-size:.72rem;font-weight:900;color:rgba(255,255,255,.8);letter-spacing:.05em;}
+.new-badge-card .nb-nm{font-size:1rem;font-weight:900;color:#fff;}
+
+/* ── ANIMS ── */
+.page-in{animation:pg-in .28s ease;}
+@keyframes pg-in{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes wgl{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal-root"></div>
+<script>
+// ═══════════════════════════════════════
+// CONSTANTS & DATA
+// ═══════════════════════════════════════
+const AVATARS=['🐯','🐰','🐻','🦊','🐸','🐧','🦁','🐙','🦋','⭐','🌈','🎮'];
+
+// レベル→CSSクラス
+function lvClass(lv){
+  if(lv.startsWith('★★★')) return 'lv3';
+  if(lv.startsWith('★★'))  return 'lv2';
+  return 'lv1';
+}
+
+const CATEGORIES=[
+  /* ── 握力 ─────────────────────────── */
+  {
+    id:'grip',name:'握力',emoji:'💪',unit:'kg',unitLabel:'キログラム',
+    color:'#FF6B35',grad:'linear-gradient(135deg,#FF6B35,#F7931E)',
+    challengeType:'input',highIsBetter:true,
+    testDesc:'両足を自然に開いて立ち、握力計を体側に垂らした手に持ちます。握力計が体や服に触れないようにして力いっぱいにぎります。左右交互に2回ずつ行い、左右各々のよい方の記録を平均します。',
+    testPoints:['握力計が体や服に触れないようにする','腕はまっすぐ体の横に垂らす','左右交互に2回ずつ行う','左右の平均値が最終記録'],
+    testVideoId:'GRIP_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'洗濯ばさみチャレンジ',desc:'人差し指と親指でパチパチ開閉！10回×3セット。',          time:'2分',tips:'指を変えながらやると全体的に鍛えられるよ',   skills:['💪 握る力','🦾 指の力'],      videoId:''},
+      {level:'★ はじめて',    title:'グーパー100回',        desc:'両手をグーにしてパーに開く動作を100回！',               time:'3分',tips:'手首をまっすぐにしてやろう',                skills:['💪 握る力','🩸 血流アップ'], videoId:''},
+      {level:'★ はじめて',    title:'スポンジにぎり',        desc:'やわらかいスポンジをにぎって放す練習。お風呂でもOK！',   time:'2分',tips:'お風呂のスポンジでもできるよ',              skills:['💪 握る力'],                videoId:''},
+      {level:'★★ レベルアップ',title:'雑巾しぼりタイム',    desc:'ぬらした雑巾をできるだけ早くしぼろう！',                 time:'3分',tips:'左手・右手交互にやろう',                    skills:['💪 握る力','🦾 手首の強さ'], videoId:''},
+      {level:'★★ レベルアップ',title:'ペットボトル持ちキープ',desc:'水入りペットボトルを横向きに持って30秒キープ！',        time:'3分',tips:'500ml→1ℓと少しずつ重くしていこう',       skills:['💪 握る力','🦾 腕の持久力'], videoId:''},
+      {level:'★★★ チャレンジ',title:'片手ぶら下がり',       desc:'鉄棒や手すりに片手でぶら下がって10秒キープ！',           time:'5分',tips:'落ちても安全な場所で練習しよう',           skills:['💪 握る力','🦾 全身の力'],  videoId:''},
+    ],
+  },
+  /* ── 上体起こし ─────────────────── */
+  {
+    id:'situp',name:'上体起こし',emoji:'🏋️',unit:'回',unitLabel:'かい',
+    color:'#9C27B0',grad:'linear-gradient(135deg,#9C27B0,#CE93D8)',
+    challengeType:'timed-counter',duration:30,highIsBetter:true,
+    testDesc:'仰向けに寝て両ひざを直角に曲げ、両手を頭の後ろで組みます。補助者が足首をしっかり押さえ、合図とともに上体を起こして両ひじを両大腿部に触れさせ、すばやく元に戻します。30秒間に何回できるか計測します。',
+    testPoints:['ひざは直角に曲げる','足首を補助者に押さえてもらう','両手は頭の後ろで組む','ひじが太ももにつくまで起こす','30秒間の回数が記録'],
+    testVideoId:'SITUP_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'ひざタッチ腹筋',  desc:'仰向けで上体を起こし、両手で交互にひざをタッチしよう！10回×3セット。',time:'2分',tips:'首に力を入れず、お腹を使って起き上がろう',  skills:['💪 筋力','🧱 体幹'],        videoId:''},
+      {level:'★ はじめて',    title:'10秒キープ',       desc:'上体を少し起こした状態で10秒キープ！お腹がプルプルしたら成功。',    time:'2分',tips:'息を止めずに深呼吸しながらキープしよう',  skills:['💪 筋力','🧱 体幹'],        videoId:''},
+      {level:'★★ レベルアップ',title:'リズム腹筋',      desc:'好きな音楽に合わせてリズムよく上体起こしをしよう！',                time:'3分',tips:'音楽のテンポを意識してやろう',              skills:['💪 筋力','🕹️ リズム感'],   videoId:''},
+      {level:'★★ レベルアップ',title:'足上げ腹筋',      desc:'足を90度に上げたまま腹筋。足を下ろしきらないのがポイント！',        time:'3分',tips:'腰を床につけたままにしよう',               skills:['💪 筋力','🧱 体幹'],        videoId:''},
+      {level:'★★ レベルアップ',title:'30秒チャレンジ',  desc:'30秒間で何回できるか数えよう！毎日記録して伸びを確かめてね。',      time:'3分',tips:'スタートはゆっくり、後半はペースを上げよう',skills:['💪 筋力','🫀 持久力'],      videoId:''},
+      {level:'★★★ チャレンジ',title:'V字バランス',      desc:'仰向けで手と足を同時に上げてV字型を作ろう！3秒キープが目標。',    time:'3分',tips:'最初はひざを曲げてもOK！',                skills:['💪 筋力','🧱 体幹','⚖️ バランス'],videoId:''},
+    ],
+  },
+  /* ── 長座体前屈 ─────────────────── */
+  {
+    id:'flex',name:'長座体前屈',emoji:'🤸',unit:'cm',unitLabel:'センチ',
+    color:'#2196F3',grad:'linear-gradient(135deg,#2196F3,#90CAF9)',
+    challengeType:'input',highIsBetter:true,
+    testDesc:'両足を伸ばして床に座り、測定箱に足の裏をつけます。ひざが曲がらないよう気をつけながら、両手を重ねてゆっくりと前に押し出します。2回行い、よい方を記録します。',
+    testPoints:['ひざが曲がらないようにする','ゆっくり・まっすぐ前に押し出す','呼吸を止めない','2回行い、よい方の記録を採用'],
+    testVideoId:'FLEX_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'つま先タッチ',    desc:'立ったまま体を前に倒してつま先をさわろう。毎日少しずつ近づいてくるよ！',  time:'2分',tips:'ひざを曲げずにゆっくり倒そう',              skills:['🤸 柔軟性'],              videoId:''},
+      {level:'★ はじめて',    title:'開脚ゆらゆら',    desc:'足を開いて座り、体を左右にゆっくりゆらそう。リラックスして行おう。',      time:'3分',tips:'痛みを感じたらすぐ止めてね',                skills:['🤸 柔軟性','🦵 股関節'],   videoId:''},
+      {level:'★ はじめて',    title:'タオル前屈',       desc:'足の裏にタオルをかけて両端を持ち、上体を前に倒す練習。',                  time:'3分',tips:'タオルを引っ張りながらゆっくり倒そう',      skills:['🤸 柔軟性'],              videoId:''},
+      {level:'★★ レベルアップ',title:'壁ストレッチ',    desc:'壁に背中をぴったりつけて座り、足をまっすぐ伸ばして前屈！',               time:'3分',tips:'お風呂上がりは体がやわらかくておすすめ',    skills:['🤸 柔軟性','🧘 集中力'],   videoId:''},
+      {level:'★★ レベルアップ',title:'開脚キープ',       desc:'足をできるだけ広げて30秒キープ！少しずつ広げていこう。',                  time:'3分',tips:'無理せず痛くない範囲でやろう',               skills:['🤸 柔軟性','🦵 股関節'],   videoId:''},
+      {level:'★★★ チャレンジ',title:'ヨガポーズ',       desc:'猫のポーズや子どものポーズなどのヨガに挑戦！気持ちよく体を伸ばそう。',    time:'5分',tips:'ゆっくり呼吸しながら体を伸ばすのがポイント',skills:['🤸 柔軟性','🧘 集中力','😌 リラックス'],videoId:''},
+    ],
+  },
+  /* ── 反復横とび ─────────────────── */
+  {
+    id:'sidestep',name:'反復横とび',emoji:'↔️',unit:'点',unitLabel:'てん',
+    color:'#009688',grad:'linear-gradient(135deg,#009688,#80CBC4)',
+    challengeType:'timed-counter',duration:20,highIsBetter:true,
+    testDesc:'中央ラインをまたいで立ち、合図とともに右のラインを踏んでから中央へ、次に左のラインを踏んでから中央へ戻ります。この動作を20秒間くり返し、通過した線の数（各ライン通過が1点）を記録します。',
+    testPoints:['中央ラインをまたいでスタート','右→中央→左→中央の順','各ライン通過ごとに1点','20秒間の合計点が記録'],
+    testVideoId:'SIDESTEP_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'ラインジャンプ',    desc:'1本の線をまたいで左右にジャンプしよう。ゆっくり正確に！',              time:'2分',tips:'着地は両足でやわらかく',                    skills:['⚡ 瞬発力','🏃 すばやさ'],  videoId:''},
+      {level:'★ はじめて',    title:'左右ステップ',      desc:'ゆっくりリズムに合わせて3本のラインをステップ練習。動きを覚えよう！',    time:'2分',tips:'まず動きを覚えることが大事。ゆっくりでOK',  skills:['🏃 すばやさ','🕹️ リズム感'],videoId:''},
+      {level:'★★ レベルアップ',title:'カウントステップ', desc:'10回ずつカウントしながらステップ。頭で数えながら体を動かそう！',         time:'3分',tips:'数えながら動くと集中力もアップするよ',       skills:['🏃 すばやさ','🧠 集中力'],  videoId:''},
+      {level:'★★ レベルアップ',title:'リズム横とび',      desc:'音楽に合わせてリズムよくジャンプ！ビートに乗って楽しくやろう。',         time:'3分',tips:'音楽のビートに合わせると疲れにくいよ',       skills:['⚡ 瞬発力','🕹️ リズム感'], videoId:''},
+      {level:'★★★ チャレンジ',title:'20秒全力',          desc:'20秒間全力でステップ→10秒休憩を3セット。本番と同じ感覚で！',           time:'5分',tips:'最後の5秒が勝負。諦めずに動き続けよう！',    skills:['⚡ 瞬発力','🫀 持久力'],    videoId:''},
+      {level:'★★★ チャレンジ',title:'カラータッチゲーム',desc:'床に色のついたテープを貼って、色を呼ばれたらすばやくタッチ！家族と楽しもう。',time:'5分',tips:'家族と一緒にやると楽しさ倍増！',           skills:['⚡ 瞬発力','🧠 判断力','🏃 すばやさ'],videoId:''},
+    ],
+  },
+  /* ── 20mシャトルラン ─────────────── */
+  {
+    id:'shuttle',name:'20mシャトルラン',emoji:'🏃',unit:'回',unitLabel:'かい',
+    color:'#F44336',grad:'linear-gradient(135deg,#F44336,#EF9A9A)',
+    challengeType:'counter',highIsBetter:true,
+    testDesc:'20m間隔の2本のラインの間を、電子音（ビープ音）のリズムに合わせて往復走します。音が鳴る前にラインに到達できなければ終了です。音楽はだんだん速くなります。',
+    testPoints:['ビープ音のリズムに合わせて走る','ラインに到達したら折り返す','音に遅れたら終了','最後まで走りきった折り返し回数が記録'],
+    testVideoId:'SHUTTLE_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'1分ジョギング',        desc:'ゆっくりでいいから1分間走り続けよう。止まらないことが大切！',             time:'3分', tips:'最初はゆっくりペースでOK。慣れたら速くしよう',skills:['🫀 持久力','🏃 走力'],       videoId:''},
+      {level:'★ はじめて',    title:'足踏みチャレンジ',     desc:'その場で元気よく足踏み！ひざをしっかり上げてテンポよく。',                time:'2分', tips:'腕も大きく振ると全身運動になるよ',             skills:['🫀 持久力','🏃 走力'],       videoId:''},
+      {level:'★★ レベルアップ',title:'20秒ダッシュ＋休憩', desc:'20秒全力→10秒休憩を3セット。心臓をしっかり動かそう！',                  time:'5分', tips:'ダッシュ中は最後まで全力を出し切ろう',         skills:['🫀 持久力','⚡ 瞬発力'],     videoId:''},
+      {level:'★★ レベルアップ',title:'階段のぼり',           desc:'家の階段を全力で何往復できるか挑戦！記録をメモしよう。',                 time:'5分', tips:'手すりを使って安全に行おう',                   skills:['🫀 持久力','🦵 脚力'],       videoId:''},
+      {level:'★★★ チャレンジ',title:'インターバル走',        desc:'「速い30秒＋ゆっくり1分」を3セットくり返そう！',                         time:'10分',tips:'ゆっくりの時間に呼吸を整えよう',             skills:['🫀 持久力','💨 スタミナ'],   videoId:''},
+      {level:'★★★ チャレンジ',title:'ビープ音練習',          desc:'スマホでシャトルラン音源を流して、リズムに合わせて部屋の端を往復しよう！', time:'5分', tips:'ラインを踏んでから折り返そう',                 skills:['🫀 持久力','🧠 集中力'],     videoId:''},
+    ],
+  },
+  /* ── 50m走 ─────────────────────── */
+  {
+    id:'dash',name:'50m走',emoji:'⚡',unit:'秒',unitLabel:'びょう',
+    color:'#FF9800',grad:'linear-gradient(135deg,#FF9800,#FFD54F)',
+    challengeType:'stopwatch',highIsBetter:false,
+    testDesc:'50mを全力でまっすぐ走ります。スタンディングスタートで合図とともにスタートし、ゴールラインを通過した時間を計測します。',
+    testPoints:['スタートの合図をよく聞く','全力でまっすぐ走る','ゴールラインを過ぎるまで走りきる','電気式またはストップウォッチで計測'],
+    testVideoId:'DASH_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'もも上げ',          desc:'その場でひざを高く上げながら元気よく足踏みしよう。20回×3セット！',         time:'2分',tips:'ひざをおへその高さまで上げるのが目標！',      skills:['⚡ 瞬発力','🏃 すばやさ'],  videoId:''},
+      {level:'★ はじめて',    title:'腕ふり練習',         desc:'腕を前後に大きく振る練習。走るときは腕の使い方がとても重要！',              time:'2分',tips:'肘を90度に曲げてコンパクトに振ろう',          skills:['⚡ 瞬発力'],               videoId:''},
+      {level:'★★ レベルアップ',title:'スタート練習',       desc:'「よーい、ドン！」のスタートダッシュを練習。前傾姿勢がポイント！',          time:'5分',tips:'スタートの瞬間は体を前に倒すイメージで',      skills:['⚡ 瞬発力','🏃 すばやさ'],  videoId:''},
+      {level:'★★ レベルアップ',title:'ミニダッシュ',       desc:'5〜10mを全力で走る練習を何本もやろう。短い距離でスピードを磨こう！',       time:'5分',tips:'毎回スタートから全力を出し切ろう',             skills:['⚡ 瞬発力','🏃 すばやさ'],  videoId:''},
+      {level:'★★★ チャレンジ',title:'坂道ダッシュ',       desc:'近くの坂道を全力で走り上がろう！坂があると自然に前傾姿勢になるよ。',        time:'5分',tips:'坂の上でしっかり止まって安全を確認しよう',    skills:['⚡ 瞬発力','💪 脚力','🫀 持久力'],videoId:''},
+      {level:'★★★ チャレンジ',title:'ラダー風ステップ',   desc:'テープを格子状に貼って、マスをすばやく踏んでいく練習。俊敏性アップ！',    time:'5分',tips:'はじめはゆっくり、慣れたらスピードを上げよう',skills:['⚡ 瞬発力','🏃 すばやさ','🕹️ リズム感'],videoId:''},
+    ],
+  },
+  /* ── 立ち幅とび ─────────────────── */
+  {
+    id:'jump',name:'立ち幅とび',emoji:'🦘',unit:'cm',unitLabel:'センチ',
+    color:'#4CAF50',grad:'linear-gradient(135deg,#4CAF50,#A5D6A7)',
+    challengeType:'input',highIsBetter:true,
+    testDesc:'両足を平行に肩幅ほどに開いて踏み切り線の前に立ち、両ひざを曲げて腕を後ろに引き、前方に思いきりジャンプします。踏み切り線から着地点（かかとの位置）までの距離を計測します。2回行い、よい方を記録します。',
+    testPoints:['踏み切り線を踏まないようにする','両足で同時にジャンプ','腕を大きく前に振って勢いをつける','かかとの着地点から踏み切り線までを計測','2回行い、よい方を記録'],
+    testVideoId:'JUMP_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'カエルジャンプ',    desc:'しゃがんでから前にぴょんっ！カエルになりきってジャンプしよう。',            time:'2分',tips:'着地したらすぐに次のジャンプをやってみよう',  skills:['⚡ 瞬発力','🦵 脚力'],      videoId:''},
+      {level:'★ はじめて',    title:'両足ジャンプ',      desc:'両足をそろえてジャンプ→やわらかく着地。ひざをクッションにしてね！',         time:'3分',tips:'ドスンとならないようにやわらかく着地しよう',  skills:['⚡ 瞬発力','⚖️ バランス'],  videoId:''},
+      {level:'★★ レベルアップ',title:'スクワットジャンプ',desc:'スクワットの姿勢から勢いをつけてジャンプ！ひざを深く曲げてから跳ぼう。',   time:'3分',tips:'ひざが内側に入らないように注意しよう',        skills:['💪 筋力','⚡ 瞬発力'],      videoId:''},
+      {level:'★★ レベルアップ',title:'着地練習',          desc:'両足でドスンとならないようにやわらかく着地する練習。',                     time:'2分',tips:'ひざをクッションにして衝撃を吸収しよう',      skills:['⚖️ バランス','🦵 脚力'],   videoId:''},
+      {level:'★★★ チャレンジ',title:'連続ジャンプ',      desc:'止まらずに10回連続でジャンプ！疲れても最後まで諦めないで。',               time:'3分',tips:'リズムをキープして同じ高さで跳び続けよう',    skills:['⚡ 瞬発力','🫀 持久力'],    videoId:''},
+      {level:'★★★ チャレンジ',title:'距離チャレンジ',    desc:'できるだけ遠くに跳ぶ練習！毎回テープで距離を記録してみよう。',              time:'5分',tips:'腕を大きく前に振って、体全体を前に投げ出すイメージ',skills:['⚡ 瞬発力','💪 脚力','🧠 集中力'],videoId:''},
+    ],
+  },
+  /* ── ソフトボール投げ ─────────────── */
+  {
+    id:'throw',name:'ソフトボール投げ',emoji:'⚾',unit:'m',unitLabel:'メートル',
+    color:'#795548',grad:'linear-gradient(135deg,#795548,#BCAAA4)',
+    challengeType:'input',highIsBetter:true,
+    testDesc:'直径2mのサークル内から、ソフトボール（2号球）を遠くに投げます。ボールが落下した地点からサークルの中心までの距離を計測します。2回行い、よい方を記録します。',
+    testPoints:['サークルの外に出ないようにして投げる','助走なしの立ち投げ','ボールが落ちた地点を計測','2回行い、よい方を記録'],
+    testVideoId:'THROW_TEST_VIDEO_ID',
+    homeTrainingMenus:[
+      {level:'★ はじめて',    title:'壁当て',            desc:'壁に向かってボールを投げてキャッチ！リズムよく繰り返そう。',                 time:'3分',tips:'投げる前に肘を肩より高く上げよう',             skills:['🎯 コントロール','💪 肩の力'],videoId:''},
+      {level:'★ はじめて',    title:'フォーム練習',       desc:'ボールを持たずに投げるフォームだけを繰り返し練習。基本が大事！',             time:'3分',tips:'足を踏み出して体ごと回転させるイメージで',     skills:['🎯 コントロール'],          videoId:''},
+      {level:'★★ レベルアップ',title:'的当て',            desc:'壁に新聞紙で的を作ってそこに当てよう！距離を変えて難易度を上げよう。',       time:'5分',tips:'的の中心を見ながら投げよう',                   skills:['🎯 コントロール','💪 筋力'], videoId:''},
+      {level:'★★ レベルアップ',title:'ワンバウンド投げ',  desc:'地面に1回バウンドさせてから遠くに転がそう。体重移動の練習になるよ！',       time:'3分',tips:'投げるときに体重を前足にしっかり乗せよう',     skills:['🎯 コントロール','💪 肩の力'],videoId:''},
+      {level:'★★★ チャレンジ',title:'遠投チャレンジ',    desc:'できるだけ遠くに投げて距離を計ろう！フォームを意識して全力投球。',           time:'5分',tips:'遠く投げるには斜め45度の角度を意識しよう',    skills:['💪 筋力','🦾 肩の力','⚡ 瞬発力'],videoId:''},
+      {level:'★★★ チャレンジ',title:'体重移動投げ',      desc:'体重を後ろ足から前足へ大きく移動させながら全力投球！全身で投げよう。',       time:'5分',tips:'腰の回転が遠投のカギ。腰から体を回そう',        skills:['💪 筋力','🎯 コントロール','🦾 全身の力'],videoId:''},
+    ],
+  },
+];
+
+// ═══════════════════════════════════════
+// BADGE DEFINITIONS
+// ═══════════════════════════════════════
+const BADGE_DEFS=[
+  {id:'first',  emoji:'🌟',name:'はじめてチャレンジ！',  desc:'はじめて記録を保存した',   check:r=>r.length>=1},
+  {id:'three',  emoji:'🥉',name:'3回チャレンジ！',       desc:'記録を合計3回保存した',    check:r=>r.length>=3},
+  {id:'ten',    emoji:'🥇',name:'10回チャレンジ！',      desc:'記録を合計10回保存した',   check:r=>r.length>=10},
+  {id:'streak3',emoji:'🔥',name:'毎日がんばりやさん',    desc:'3日連続で記録を保存した',  check:r=>checkStreak(r,3)},
+  {id:'allcat', emoji:'🌈',name:'なんでもチャレンジャー',desc:'全8種目に1回以上挑戦した', check:r=>new Set(r.map(x=>x.categoryId)).size>=8},
+  {id:'twenty', emoji:'🏆',name:'20回チャレンジ！',      desc:'記録を合計20回保存した',   check:r=>r.length>=20},
+];
+
+function checkStreak(recs,n){
+  if(recs.length<n) return false;
+  const dates=[...new Set(recs.map(r=>r.date))].sort();
+  for(let i=0;i<=dates.length-n;i++){
+    let s=1;
+    for(let j=i+1;j<dates.length;j++){
+      const diff=(new Date(dates[j].replace(/\//g,'-'))-new Date(dates[j-1].replace(/\//g,'-')))/86400000;
+      if(diff===1) s++; else break;
+    }
+    if(s>=n) return true;
+  }
+  return false;
+}
+
+function checkAndAwardBadges(playerId){
+  const recs=DB.getRecords(playerId);
+  return BADGE_DEFS.filter(bd=>bd.check(recs)&&DB.awardBadge(playerId,bd.id));
+}
+
+// ④ 次のバッジまであと○回
+function nextBadgeInfo(playerId){
+  const recs=DB.getRecords(playerId);
+  const earned=DB.getBadges(playerId);
+  const countTargets=[
+    {id:'first',count:1},{id:'three',count:3},{id:'ten',count:10},{id:'twenty',count:20}
+  ];
+  for(const t of countTargets){
+    if(!earned.includes(t.id)){
+      const rem=t.count-recs.length;
+      if(rem>0) return {badge:BADGE_DEFS.find(b=>b.id===t.id),remaining:rem,total:t.count,done:recs.length,unit:'回'};
+    }
+  }
+  if(!earned.includes('allcat')){
+    const done=new Set(recs.map(r=>r.categoryId)).size;
+    const rem=8-done;
+    if(rem>0) return {badge:BADGE_DEFS.find(b=>b.id==='allcat'),remaining:rem,total:8,done,unit:'種目'};
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════
+// STORAGE (localStorage + メモリ二重管理)
+// ═══════════════════════════════════════
+let _mem=null;
+const DB={
+  KEY:'karadachallenge_v2',
+  _get(){
+    if(_mem) return _mem;
+    try{ _mem=JSON.parse(localStorage.getItem(this.KEY)||'null')||{players:[],currentId:null,records:[]}; }
+    catch(e){ if(!_mem) _mem={players:[],currentId:null,records:[]}; }
+    return _mem;
+  },
+  _set(d){ _mem=d; try{localStorage.setItem(this.KEY,JSON.stringify(d));}catch(e){} },
+  getAll(){ return this._get(); },
+  getCurrentPlayer(){ const d=this._get(); return d.players.find(p=>p.id===d.currentId)||null; },
+  createPlayer(name,grade,avatarIdx){
+    const d=this._get();
+    const p={id:'p'+Date.now(),name,grade,avatarIdx:avatarIdx||0,createdAt:today()};
+    d.players.push(p); d.currentId=p.id; this._set(d); return p;
+  },
+  selectPlayer(id){ const d=this._get(); d.currentId=id; this._set(d); },
+  deletePlayer(id){
+    const d=this._get();
+    d.players=d.players.filter(p=>p.id!==id);
+    d.records=(d.records||[]).filter(r=>r.playerId!==id);
+    if(d.currentId===id) d.currentId=d.players[0]?.id||null;
+    this._set(d);
+  },
+  addRecord(playerId,categoryId,value){
+    const d=this._get();
+    if(!d.records) d.records=[];
+    d.records.push({id:'r'+Date.now(),playerId,categoryId,value:parseFloat(value),date:today(),ts:Date.now()});
+    this._set(d);
+  },
+  getRecords(playerId){ return (this._get().records||[]).filter(r=>r.playerId===playerId).sort((a,b)=>b.ts-a.ts); },
+  getBest(playerId,catId){
+    const cat=CATEGORIES.find(c=>c.id===catId);
+    const recs=(this._get().records||[]).filter(r=>r.playerId===playerId&&r.categoryId===catId);
+    if(!recs.length) return null;
+    return cat.highIsBetter?recs.reduce((a,b)=>a.value>b.value?a:b):recs.reduce((a,b)=>a.value<b.value?a:b);
+  },
+  getBadges(playerId){ return ((this._get().badges)||{})[playerId]||[]; },
+  awardBadge(playerId,badgeId){
+    const d=this._get();
+    if(!d.badges) d.badges={};
+    if(!d.badges[playerId]) d.badges[playerId]=[];
+    if(d.badges[playerId].includes(badgeId)) return false;
+    d.badges[playerId].push(badgeId); this._set(d); return true;
+  },
+};
+
+function today(){ const d=new Date(); return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`; }
+
+// ═══════════════════════════════════════
+// ROUTER
+// ═══════════════════════════════════════
+let CS={};
+function navigate(hash){ if(CS.timer){clearInterval(CS.timer);CS.timer=null;} window.location.hash=hash; }
+function render(){
+  const hash=window.location.hash.slice(1)||'';
+  const [page,param]=hash.split('/');
+  const data=DB.getAll();
+  if(!page||page==='welcome'){ renderWelcome(data); return; }
+  if(!data.currentId){ navigate('welcome'); return; }
+  switch(page){
+    case 'home':      renderHome(data); break;
+    case 'category':  renderCategory(param,data); break;
+    case 'challenge': renderChallenge(param,data); break;
+    case 'records':   renderRecords(data); break;
+    default:          renderHome(data);
+  }
+}
+window.addEventListener('hashchange',render);
+window.addEventListener('DOMContentLoaded',render);
+
+// ═══════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]');
+  if(!el) return;
+  e.preventDefault();
+  switch(el.dataset.action){
+    case 'nav':         navigate(el.dataset.to); break;
+    case 'open-modal':  showModal(el.dataset.modal); break;
+    case 'close-modal': closeModal(); break;
+    case 'sel-player':  DB.selectPlayer(el.dataset.id); navigate('home'); break;
+    case 'del-player':
+      if(confirm(`「${el.dataset.name}」のプロフィールを削除しますか？`)){ DB.deletePlayer(el.dataset.id); render(); }
+      break;
+    case 'show-tab':
+      document.querySelectorAll('.tab-item').forEach(t=>t.classList.toggle('active',t===el));
+      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('hidden',p.dataset.pane!==el.dataset.tab));
+      break;
+    case 'play-video':  playVideo(el); break;
+    case 'sw-start':    swStart(); break;
+    case 'sw-stop':     swStop(); break;
+    case 'sw-reset':    swReset(); break;
+    case 'tc-start':    tcStart(); break;
+    case 'tc-tap':      tcTap(); break;
+    case 'cnt-plus':    cntPlus(); break;
+    case 'cnt-minus':   cntMinus(); break;
+    case 'cnt-done':    cntDone(); break;
+    case 'save-record': saveRecord(); break;
+  }
+});
+document.addEventListener('submit',e=>{
+  if(e.target.id==='player-form'){
+    e.preventDefault();
+    const name=document.getElementById('p-name').value.trim();
+    const grade=document.getElementById('p-grade').value;
+    const aidx=parseInt(document.getElementById('p-avatar-idx').value||'0');
+    if(!name) return;
+    DB.createPlayer(name,grade,aidx);
+    closeModal();
+    navigate('home');
+  }
+});
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+function showModal(type){
+  if(type!=='create-player') return;
+  document.getElementById('modal-root').innerHTML=`
+    <div class="modal-overlay" data-action="close-modal">
+      <div class="modal" onclick="event.stopPropagation()">
+        <h3>👤 プロフィール作成</h3>
+        <p class="sub-label">アイコンを選んでね！</p>
+        <div class="avatar-grid">
+          ${AVATARS.map((a,i)=>`<button type="button" class="avatar-btn${i===0?' sel':''}" onclick="selAvatar(${i})">${a}</button>`).join('')}
+        </div>
+        <input type="hidden" id="p-avatar-idx" value="0">
+        <form id="player-form">
+          <input class="m-input" id="p-name" type="text" placeholder="なまえを入れてね" maxlength="10" required>
+          <select class="m-select" id="p-grade">
+            <option value="">学年を選んでね（任意）</option>
+            ${['1年生','2年生','3年生','4年生','5年生','6年生','中学1年生','中学2年生','中学3年生','保護者'].map(g=>`<option>${g}</option>`).join('')}
+          </select>
+          <div class="btn-row">
+            <button type="button" class="btn btn-s" data-action="close-modal">キャンセル</button>
+            <button type="submit" class="btn btn-p">作成！</button>
+          </div>
+        </form>
+      </div>
+    </div>`;
+}
+window.selAvatar=idx=>{
+  document.querySelectorAll('.avatar-btn').forEach((b,i)=>b.classList.toggle('sel',i===idx));
+  const el=document.getElementById('p-avatar-idx'); if(el) el.value=idx;
+};
+function closeModal(){ document.getElementById('modal-root').innerHTML=''; }
+
+// ═══════════════════════════════════════
+// VIDEO HELPERS
+// ═══════════════════════════════════════
+function playVideo(thumbEl){
+  const wrap=thumbEl.closest('.vid-wrap');
+  const iframe=wrap.querySelector('iframe');
+  const vid=wrap.dataset.vid||'';
+  if(!vid||vid.endsWith('_VIDEO_ID')){
+    thumbEl.innerHTML=`<div class="vid-placeholder"><div class="ph-icon">🎬</div><div class="ph-text">YouTubeの動画IDを設定すると再生できます</div></div>`;
+    return;
+  }
+  iframe.src=`https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+  thumbEl.classList.add('gone');
+}
+
+// テストのやり方タブ用（タイトル付き大きめ動画）
+function videoSection(vid,label){
+  return `<div class="vid-section">
+    <div class="vs-title">▶ ${label}</div>
+    <div class="vid-wrap" data-vid="${vid}">
+      <div class="vid-thumb" data-action="play-video"><div class="play-circle">▶</div><div class="vid-label">タップして動画を見る</div></div>
+      <iframe src="" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p class="vid-note">※ YouTubeの動画IDを設定すると再生できます。</p>
+  </div>`;
+}
+
+// カード内コンパクト動画
+function inlineVideo(vid){
+  return `<div class="tc-vid">
+    <div class="vid-wrap" data-vid="${vid||''}">
+      <div class="vid-thumb" data-action="play-video"><div class="play-circle">▶</div><div class="vid-label">動画を見る</div></div>
+      <iframe src="" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════════
+function setApp(html){ document.getElementById('app').innerHTML=`<div class="page-in">${html}</div>`; }
+
+// ① ② ⑤ ⑥ ⑦ 練習メニューカード生成関数
+function renderTrainingCard(menu,cat){
+  return `<div class="tc">
+    <div class="tc-header">
+      <span class="tc-level ${lvClass(menu.level)}">${menu.level}</span>
+      <span class="tc-time">⏰ ${menu.time}でできるよ！</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-title">${menu.title}</div>
+      <div class="tc-desc">${menu.desc}</div>
+      ${menu.tips?`<div class="tc-tips"><span style="flex-shrink:0;">💡</span><span><strong>コツ：</strong>${menu.tips}</span></div>`:''}
+      <div class="tc-skills">
+        ${menu.skills.map(s=>`<span class="tc-skill" style="background:${cat.color}18;color:${cat.color};">${s}</span>`).join('')}
+      </div>
+    </div>
+    ${inlineVideo(menu.videoId)}
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// PAGE: WELCOME
+// ═══════════════════════════════════════
+function renderWelcome(data){
+  setApp(`
+    <div class="welcome-hero">
+      <div class="big-icon">🏅</div>
+      <h1>からだチャレンジ！</h1>
+      <p>新体力テストで自分のからだを知ろう。<br>毎日の記録を積み重ねていこう！</p>
+    </div>
+    <div class="welcome-body">
+      ${data.players.length?`
+        <p class="sec-title">👤 だれがやる？</p>
+        <div class="player-list">
+          ${data.players.map(p=>`
+            <div class="player-card" data-action="sel-player" data-id="${p.id}">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2);">${AVATARS[p.avatarIdx]||'👤'}</div>
+              <div class="player-info">
+                <div class="nm">${p.name}</div>
+                <div class="sub">${p.grade||''} ${p.createdAt?'・登録日 '+p.createdAt:''}</div>
+              </div>
+              <button data-action="del-player" data-id="${p.id}" data-name="${p.name}"
+                style="margin-left:auto;background:none;border:none;color:#DDD;font-size:1.1rem;cursor:pointer;padding:4px 8px;"
+                onclick="event.stopPropagation()">✕</button>
+            </div>`).join('')}
+        </div>`:`
+        <div style="text-align:center;padding:28px 0 20px;color:#CCC;">
+          <div style="font-size:3rem;margin-bottom:10px;">👋</div>
+          <p style="font-weight:700;">まずプロフィールを作ってね！</p>
+        </div>`}
+      <button class="add-btn" data-action="open-modal" data-modal="create-player">
+        ＋ あたらしいプロフィールを作る
+      </button>
+    </div>`);
+}
+
+// ═══════════════════════════════════════
+// PAGE: HOME
+// ═══════════════════════════════════════
+function renderHome(data){
+  const player=data.players.find(p=>p.id===data.currentId);
+  if(!player){ navigate('welcome'); return; }
+  setApp(`
+    <div class="home-header">
+      <div class="home-greeting">こんにちは！</div>
+      <div class="home-user">${AVATARS[player.avatarIdx]||'👤'} ${player.name}さん</div>
+      ${player.grade?`<div class="home-grade">${player.grade}</div>`:''}
+      <button class="switch-btn" onclick="navigate('welcome')">👤 プロフィール切替</button>
+    </div>
+    <div class="home-body">
+      <p class="sec-title" style="margin-bottom:14px;">🏋️ 種目を選ぼう</p>
+      <div class="cat-grid">
+        ${CATEGORIES.map(cat=>{
+          const best=DB.getBest(player.id,cat.id);
+          return `<div class="cat-card" style="background:${cat.grad};" data-action="nav" data-to="category/${cat.id}">
+            <div class="cat-icon">${cat.emoji}</div>
+            <div class="cat-name">${cat.name}</div>
+            <div class="cat-unit-l">${cat.unitLabel}で計測</div>
+            <div class="cat-best">${best?`🏆 ${best.value} ${cat.unit}`:'まだ記録なし'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="rec-btn" data-action="nav" data-to="records">
+        <span>📊</span><span>わたしの記録を見る</span><span style="margin-left:auto;color:#CCC">›</span>
+      </button>
+    </div>`);
+}
+
+// ═══════════════════════════════════════
+// PAGE: CATEGORY
+// ═══════════════════════════════════════
+function renderCategory(catId,data){
+  const cat=CATEGORIES.find(c=>c.id===catId);
+  if(!cat){ navigate('home'); return; }
+  const player=data.players.find(p=>p.id===data.currentId);
+  const best=DB.getBest(player.id,catId);
+  setApp(`
+    <div class="nav-bar">
+      <button class="nav-back" data-action="nav" data-to="home">←</button>
+      <span class="nav-title">${cat.emoji} ${cat.name}</span>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="cat-hero" style="background:${cat.grad};">
+      <div class="hero-icon">${cat.emoji}</div>
+      <h2>${cat.name}</h2>
+      <p class="hero-sub">（${cat.unitLabel}で計測）${best?`　🏆 自己ベスト: ${best.value} ${cat.unit}`:''}</p>
+    </div>
+    <div class="tab-bar" style="--ac:${cat.color};">
+      <button class="tab-item active" data-action="show-tab" data-tab="test">📋 テストのやり方</button>
+      <button class="tab-item"        data-action="show-tab" data-tab="home">🏠 おうちで練習</button>
+    </div>
+
+    <!-- テストのやり方タブ -->
+    <div class="tab-pane" data-pane="test">
+      ${videoSection(cat.testVideoId,'見本動画（文部科学省 新体力テスト）')}
+      <div class="info-card">
+        <div class="ic-title">📖 テストのやり方</div>
+        <p>${cat.testDesc}</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-title">✅ 気をつけるポイント</div>
+        <ul class="pts-list">${cat.testPoints.map(p=>`<li>${p}</li>`).join('')}</ul>
+      </div>
+      <div class="fab-spacer"></div>
+    </div>
+
+    <!-- おうちで練習タブ -->
+    <div class="tab-pane hidden" data-pane="home">
+      <div class="training-intro" style="background:${cat.color}12;border-left-color:${cat.color};">
+        <div class="ti-label" style="color:${cat.color};">🏠 おうちでできる練習メニュー</div>
+        <div class="ti-sub">レベルを選んで毎日少しずつ続けよう！★から始めて、慣れたら★★★に挑戦しよう。</div>
+      </div>
+      <div class="training-cards">
+        ${cat.homeTrainingMenus.map(m=>renderTrainingCard(m,cat)).join('')}
+      </div>
+      <div class="fab-spacer"></div>
+    </div>
+
+    <button class="fab" style="background:${cat.grad};" data-action="nav" data-to="challenge/${catId}">
+      🎯 チャレンジスタート！
+    </button>`);
+}
+
+// ═══════════════════════════════════════
+// PAGE: CHALLENGE
+// ═══════════════════════════════════════
+function renderChallenge(catId,data){
+  const cat=CATEGORIES.find(c=>c.id===catId);
+  if(!cat){ navigate('home'); return; }
+  const player=data.players.find(p=>p.id===data.currentId);
+  const best=DB.getBest(player.id,catId);
+  CS={catId,playerId:player.id,cat,timer:null,count:0,elapsed:0,running:false,timeLeft:cat.duration||30};
+  let inner='';
+
+  if(cat.challengeType==='input'){
+    inner=`
+      <p style="text-align:center;color:#999;font-size:.9rem;margin-bottom:18px;">計測した記録を入力してね</p>
+      <div class="inp-wrap">
+        <input class="big-inp" id="rec-inp" type="number" step="0.1" min="0" placeholder="0">
+        <span class="inp-unit">${cat.unit}</span>
+      </div>
+      <button class="big-btn" style="background:${cat.grad};color:#fff;" data-action="save-record">💾 記録を保存する</button>`;
+  }
+  else if(cat.challengeType==='stopwatch'){
+    inner=`
+      <div class="timer-display">
+        <div class="timer-num" id="sw-disp">00.0</div>
+        <div class="timer-unit-l">秒</div>
+      </div>
+      <div class="two-col">
+        <button class="big-btn" id="sw-start-btn" style="background:${cat.grad};color:#fff;flex:2;" data-action="sw-start">▶ スタート</button>
+        <button class="big-btn btn-neutral" id="sw-stop-btn" style="flex:1;opacity:.45;" data-action="sw-stop" disabled>⏹ 止める</button>
+      </div>
+      <button class="big-btn btn-neutral" data-action="sw-reset">↺ リセット</button>
+      <div id="sw-save" style="display:none;margin-top:16px;">
+        <p style="text-align:center;font-size:.88rem;color:#999;margin-bottom:12px;">記録を確認して保存してね</p>
+        <div class="inp-wrap">
+          <input class="big-inp" id="rec-inp" type="number" step="0.01" min="0">
+          <span class="inp-unit">${cat.unit}</span>
+        </div>
+        <button class="big-btn" style="background:${cat.grad};color:#fff;" data-action="save-record">💾 記録を保存する</button>
+      </div>`;
+  }
+  else if(cat.challengeType==='timed-counter'){
+    inner=`
+      <div class="timer-display">
+        <div class="timer-num" id="tc-time">${cat.duration}</div>
+        <div class="timer-unit-l">秒</div>
+        <div class="prog-bar-wrap"><div class="prog-bar" id="tc-prog" style="width:100%;background:${cat.color};"></div></div>
+      </div>
+      <div class="cnt-display">
+        <div class="cnt-num" id="tc-cnt" style="color:${cat.color};">0</div>
+        <div class="cnt-label">${cat.unit}</div>
+      </div>
+      <button class="big-btn tap-btn" id="tc-tap" style="background:${cat.grad};color:#fff;display:none;" data-action="tc-tap">タップ！　＋１</button>
+      <button class="big-btn" id="tc-start" style="background:${cat.grad};color:#fff;" data-action="tc-start">▶ スタート</button>
+      <div id="tc-save" style="display:none;margin-top:16px;">
+        <p style="text-align:center;font-size:.88rem;color:#999;margin-bottom:12px;">記録を確認して保存してね</p>
+        <div class="inp-wrap">
+          <input class="big-inp" id="rec-inp" type="number" min="0">
+          <span class="inp-unit">${cat.unit}</span>
+        </div>
+        <button class="big-btn" style="background:${cat.grad};color:#fff;" data-action="save-record">💾 記録を保存する</button>
+      </div>`;
+  }
+  else if(cat.challengeType==='counter'){
+    inner=`
+      <div class="cnt-display" style="margin:32px 0;">
+        <div class="cnt-num" id="cnt-n" style="color:${cat.color};">0</div>
+        <div class="cnt-label">${cat.unit}</div>
+      </div>
+      <button class="big-btn tap-btn" style="background:${cat.grad};color:#fff;" data-action="cnt-plus">タップ！　＋１</button>
+      <div class="two-col">
+        <button class="big-btn btn-neutral" style="flex:1;" data-action="cnt-minus">−1 もどす</button>
+        <button class="big-btn" style="flex:2;background:${cat.grad};color:#fff;" data-action="cnt-done">完了！記録する</button>
+      </div>
+      <div id="cnt-save" style="display:none;margin-top:16px;">
+        <p style="text-align:center;font-size:.88rem;color:#999;margin-bottom:12px;">記録を確認して保存してね</p>
+        <div class="inp-wrap">
+          <input class="big-inp" id="rec-inp" type="number" min="0">
+          <span class="inp-unit">${cat.unit}</span>
+        </div>
+        <button class="big-btn" style="background:${cat.grad};color:#fff;" data-action="save-record">💾 記録を保存する</button>
+      </div>`;
+  }
+
+  setApp(`
+    <div class="nav-bar">
+      <button class="nav-back" data-action="nav" data-to="category/${catId}">←</button>
+      <span class="nav-title">🎯 チャレンジ</span>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="ch-hero" style="background:${cat.grad};">
+      <div style="font-size:2.4rem;margin-bottom:8px;">${cat.emoji}</div>
+      <h2>${cat.name}</h2>
+      <p>${best?`🏆 自己ベスト: ${best.value} ${cat.unit}`:'まだ記録なし。がんばってね！'}</p>
+    </div>
+    <div class="ch-body">${inner}</div>`);
+}
+
+// ── Stopwatch ──────────────────────────
+function swStart(){
+  if(CS.running) return;
+  CS.running=true; CS.startTime=Date.now()-CS.elapsed;
+  const sb=document.getElementById('sw-start-btn'),sp=document.getElementById('sw-stop-btn');
+  if(sb){sb.disabled=true;sb.style.opacity='.45';} if(sp){sp.disabled=false;sp.style.opacity='1';}
+  CS.timer=setInterval(()=>{ CS.elapsed=Date.now()-CS.startTime; const el=document.getElementById('sw-disp'); if(el) el.textContent=(CS.elapsed/1000).toFixed(1); },50);
+}
+function swStop(){
+  if(!CS.running) return;
+  clearInterval(CS.timer); CS.running=false;
+  const sb=document.getElementById('sw-start-btn'),sp=document.getElementById('sw-stop-btn');
+  if(sb){sb.disabled=false;sb.style.opacity='1';} if(sp){sp.disabled=true;sp.style.opacity='.45';}
+  const sv=document.getElementById('sw-save');
+  if(sv){ sv.style.display='block'; const inp=document.getElementById('rec-inp'); if(inp) inp.value=(CS.elapsed/1000).toFixed(2); }
+}
+function swReset(){
+  clearInterval(CS.timer); CS.running=false; CS.elapsed=0;
+  const el=document.getElementById('sw-disp'); if(el) el.textContent='00.0';
+  const sb=document.getElementById('sw-start-btn'),sp=document.getElementById('sw-stop-btn');
+  if(sb){sb.disabled=false;sb.style.opacity='1';} if(sp){sp.disabled=true;sp.style.opacity='.45';}
+  const sv=document.getElementById('sw-save'); if(sv) sv.style.display='none';
+}
+
+// ── Timed Counter ───────────────────────
+function tcStart(){
+  CS.count=0; CS.timeLeft=CS.cat.duration;
+  const dur=CS.cat.duration;
+  const sb=document.getElementById('tc-start'),tp=document.getElementById('tc-tap');
+  if(sb) sb.style.display='none'; if(tp) tp.style.display='block';
+  CS.timer=setInterval(()=>{
+    CS.timeLeft--;
+    const tel=document.getElementById('tc-time'),prog=document.getElementById('tc-prog');
+    if(tel) tel.textContent=CS.timeLeft<=0?'🎉':CS.timeLeft;
+    if(prog) prog.style.width=(Math.max(0,CS.timeLeft)/dur*100)+'%';
+    if(CS.timeLeft<=0){
+      clearInterval(CS.timer); if(tp) tp.style.display='none';
+      const sv=document.getElementById('tc-save');
+      if(sv){ sv.style.display='block'; const inp=document.getElementById('rec-inp'); if(inp) inp.value=CS.count; }
+    }
+  },1000);
+}
+function tcTap(){
+  if(CS.timeLeft<=0) return; CS.count++;
+  const el=document.getElementById('tc-cnt');
+  if(el){ el.textContent=CS.count; el.style.transform='scale(1.25)'; setTimeout(()=>{if(el)el.style.transform='scale(1)';},100); }
+}
+
+// ── Counter ────────────────────────────
+function cntPlus(){
+  CS.count=(CS.count||0)+1;
+  const el=document.getElementById('cnt-n');
+  if(el){ el.textContent=CS.count; el.style.transform='scale(1.2)'; setTimeout(()=>{if(el)el.style.transform='scale(1)';},100); }
+}
+function cntMinus(){
+  if((CS.count||0)<=0) return; CS.count--;
+  const el=document.getElementById('cnt-n'); if(el) el.textContent=CS.count;
+}
+function cntDone(){
+  const sv=document.getElementById('cnt-save');
+  if(sv){ sv.style.display='block'; const inp=document.getElementById('rec-inp'); if(inp) inp.value=CS.count||0; }
+}
+
+// ═══════════════════════════════════════
+// SAVE RECORD
+// ═══════════════════════════════════════
+function saveRecord(){
+  const inp=document.getElementById('rec-inp');
+  if(!inp) return;
+  const val=parseFloat(inp.value);
+  if(isNaN(val)||val<0){ inp.style.borderColor='#F44336'; setTimeout(()=>{if(inp)inp.style.borderColor='#E0E0E0';},1500); return; }
+  DB.addRecord(CS.playerId,CS.catId,val);
+  const newBadges=checkAndAwardBadges(CS.playerId);
+  const cat=CS.cat;
+  setApp(`
+    <div class="success-page">
+      <div class="success-icon">🎉</div>
+      <h2 style="font-size:1.8rem;font-weight:900;margin:16px 0 6px;">きろく保存！</h2>
+      <p style="color:#999;">すごい！がんばったね！</p>
+      <div class="success-val" style="background:${cat.grad};">
+        <div class="sv-num">${val} <span class="sv-unit">${cat.unit}</span></div>
+        <div class="sv-cat">${cat.name}</div>
+      </div>
+      ${newBadges.length?`
+      <div class="new-badge-area">
+        <p style="font-size:.82rem;font-weight:900;color:#FF9800;margin-bottom:10px;text-align:center;">🏅 新しいバッジ獲得！</p>
+        ${newBadges.map(b=>`<div class="new-badge-card">
+          <div class="nb-ic">${b.emoji}</div>
+          <div><div class="nb-lbl">NEW BADGE</div><div class="nb-nm">「${b.name}」</div></div>
+        </div>`).join('')}
+      </div>`:''}
+      <div class="stack-btns" style="margin-top:${newBadges.length?'8':'0'}px;">
+        <button class="big-btn" style="background:${cat.grad};color:#fff;" data-action="nav" data-to="challenge/${cat.id}">もう一度チャレンジ！</button>
+        <button class="big-btn btn-neutral" data-action="nav" data-to="records">📊 記録を見る</button>
+        <button class="big-btn btn-neutral" data-action="nav" data-to="home">🏠 ホームに戻る</button>
+      </div>
+    </div>`);
+}
+
+// ═══════════════════════════════════════
+// PAGE: RECORDS
+// ═══════════════════════════════════════
+function renderRecords(data){
+  const player=data.players.find(p=>p.id===data.currentId);
+  if(!player){ navigate('home'); return; }
+  const recs=DB.getRecords(player.id);
+  const earnedIds=DB.getBadges(player.id);
+  const nb=nextBadgeInfo(player.id);
+
+  setApp(`
+    <div class="nav-bar">
+      <button class="nav-back" data-action="nav" data-to="home">←</button>
+      <span class="nav-title">📊 わたしの記録</span>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="rec-page">
+      <div class="rec-player-bar">
+        <div class="av">${AVATARS[player.avatarIdx]||'👤'}</div>
+        <div>
+          <div style="font-size:1.05rem;font-weight:900;">${player.name}さんの記録</div>
+          <div style="font-size:.8rem;color:#999;">${player.grade||''}</div>
+        </div>
+      </div>
+
+      <p class="sec-title">🏆 自己ベスト一覧</p>
+      <div class="best-grid">
+        ${CATEGORIES.map(cat=>{
+          const best=DB.getBest(player.id,cat.id);
+          return `<div class="best-card" style="border-left-color:${cat.color};">
+            <div class="bc-icon">${cat.emoji}</div>
+            <div class="bc-name">${cat.name}</div>
+            ${best
+              ?`<div class="bc-val" style="color:${cat.color};">${best.value} <span class="bc-unit">${cat.unit}</span></div><div class="bc-date">${best.date}</div>`
+              :`<div class="bc-none">まだ記録なし</div>`}
+          </div>`;
+        }).join('')}
+      </div>
+
+      <div class="badge-section">
+        <p class="sec-title">🏅 獲得バッジ</p>
+        ${nb?`
+        <div class="next-badge-bar">
+          <div class="nb-row">
+            <span class="nb-emoji-big">${nb.badge.emoji}</span>
+            <div>
+              <div class="nb-main">次のバッジまであと ${nb.remaining} ${nb.unit}！</div>
+              <div class="nb-sub">「${nb.badge.name}」まであと少し！</div>
+            </div>
+          </div>
+          <div class="nb-prog-wrap">
+            <div class="nb-prog" style="width:${Math.min(100,Math.round(nb.done/nb.total*100))}%;"></div>
+          </div>
+        </div>`:''}
+        <div class="badge-grid">
+          ${BADGE_DEFS.map(bd=>{
+            const earned=earnedIds.includes(bd.id);
+            return `<div class="badge-card ${earned?'earned':'locked'}">
+              <div class="bd-emoji">${bd.emoji}</div>
+              <div class="bd-name">${bd.name}</div>
+              <div class="bd-desc">${bd.desc}</div>
+              ${earned?'<div class="bd-ok">✅ 獲得済み</div>':''}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <p class="sec-title">📅 きろく一覧</p>
+      ${recs.length?`
+        <div class="hist-list">
+          ${recs.map(r=>{
+            const cat=CATEGORIES.find(c=>c.id===r.categoryId); if(!cat) return '';
+            return `<div class="hist-item">
+              <div class="hist-emoji" style="background:${cat.color}22;">${cat.emoji}</div>
+              <div class="hist-info">
+                <div class="hi-cat" style="color:${cat.color};">${cat.name}</div>
+                <div class="hi-val">${r.value} ${cat.unit}</div>
+              </div>
+              <div class="hist-date">${r.date}</div>
+            </div>`;
+          }).join('')}
+        </div>`:`
+        <div class="no-rec">
+          <div style="font-size:3rem;margin-bottom:12px;">📋</div>
+          <p>まだ記録がないよ。<br>チャレンジしてみよう！</p>
+        </div>`}
+      <div style="margin-top:24px;">
+        <button class="big-btn" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;" data-action="nav" data-to="home">
+          🏋️ チャレンジしに行く！
+        </button>
+      </div>
+    </div>`);
+}
+</script>
+</body>
+</html>
